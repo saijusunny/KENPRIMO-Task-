@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8 col-md-8 col-sm-12" style="margin: 1% auto;">
+            <div style="text-align: right;" class="mb-3">
+                <!-- Example single danger button -->
+                
+               
+                <a href="" class="" data-toggle="modal" data-target="#add_special"><button type="button" class="btn btn-dark">Add Room</button></a> 
+                
+            </div>
+            <table class="table table-responsive-sm " >
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Room Category</th>
+                    <th scope="col">Special Price(₹)</th>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">End Date</th>
+                    <th scope="col">Action</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for sp in spcl%}
+                  <tr>
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td>{{sp.room_category}} </td>
+                    <td>{{sp.room_multiplier}} </td>
+                    <td>{{sp.start_date}} </td>
+                    <td>{{sp.end_date}} </td>
+                    
+                    
+                    
+                    <td>
+                        
+                        <a href="#" class="btn btn-success ml-1 mb-2" data-toggle="modal" data-target="#edit_special{{sp.id}}">Edit</a>
+                        <a href="{% url 'delete_specialrate' sp.id%}">
+                        <button class=" btn btn-danger ml-1 mb-2" >delete</button></a>
+                    </td>
+                    
+                  </tr>
+                  {%endfor%}
+                  
+                 
+                </tbody>
+              </table>
+        </div>
+    </div>
+
+    {% for i in spcl%}
+    <div class="modal fade" id="edit_special{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Special Price</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                    <form action="{% url 'edit_specialrate' i.id%}" class="form" method="POST">
+                        {% csrf_token %}
+                        <label for="">Category</label>
+                        <select name="category" id="" placeholder="category" class="form-control">
+                        <option value="{{i.room_category}}">{{i.room_category}}</option>
+                        {%for j in cat%}
+                        <option value="{{j.name}}">{{j.name}}</option>
+                        {%endfor%}
+                        </select> <br>
+                        <label for="">Price (₹):</label>
+                        <input type="number" name="price" placeholder="price" style="margin-top: 1%;" class="form-control" value="{{i.room_multiplier}}"><br>
+                        <label for="">Start Date:</label>
+                        <input type="date" name="st_dt" value="{{i.start_date| date:'Y-m-d'}}" placeholder="" style="margin-top: 1%;" class="form-control" ><br>
+                        <label for="">End Date</label>
+                        <input type="date" name="end_dt"  value="{{i.end_date | date:'Y-m-d'}}" placeholder="" style="margin-top: 1%;" class="form-control" ><br>
+
+                        
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success" id="add-button" >Save changes</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+    {%endfor%}
+
+    <div class="modal fade" id="add_special" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Special Rate</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                    <form action="{% url 'add_specialrate'%}" class="form" method="POST">
+                        {% csrf_token %}
+                        
+                        
+
+                        <select name="category" id="" placeholder="category" class="form-control">
+                            <option value="">Select Category</option>
+                            {%for i in cat%}
+                            <option value="{{i.id}}">{{i.name}}</option>
+                            {%endfor%}
+                        </select> <br>
+                        <label for="">Price(₹):</label>
+                        <input type="number" name="price" placeholder="price" style="margin-top: 1%;" class="form-control" ><br>
+                        <label for="">Start Date:</label>
+                        <input type="date" name="st_dt" placeholder="" style="margin-top: 1%;" class="form-control" ><br>
+                        <label for="">End Date</label>
+                        <input type="date" name="end_dt" placeholder="" style="margin-top: 1%;" class="form-control" ><br>
+    
+                        
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success" id="add-button" >Save changes</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+  
+ 
+
+{% endblock %}
+

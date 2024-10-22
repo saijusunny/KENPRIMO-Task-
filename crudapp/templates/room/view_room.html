@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8 col-md-8 col-sm-12" style="margin: 1% auto;">
+            <div style="text-align: right;" class="mb-3">
+                <!-- Example single danger button -->
+                
+                <a href="{%url 'available_room'%}"><button type="button" class="btn btn-dark">Available Rooms</button></a>
+                <a href="" class="" data-toggle="modal" data-target="#add_room"><button type="button" class="btn btn-dark">Add Room</button></a> 
+                
+            </div>
+            <table class="table table-responsive-sm " >
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Room Number</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for room in rooms%}
+                  <tr>
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td>{{room.room_number}} </td>
+                    <td>{{room.category.name}} </td>
+                    {% if room.is_available == 0%}
+                    <td style="padding-top: 1.2rem;"> <span class="bg-success p-2 text-light" >Available</span></td>
+                    {% else%}
+                    <td style="padding-top: 1.2rem;"> <span class="bg-danger p-2 text-light" > Not Available</span></td>
+                    {%endif%}
+                    
+                    <td>
+                        
+                        <a href="#" class="btn btn-success ml-1 mb-2" data-toggle="modal" data-target="#edit_room{{room.id}}" >Edit</a>
+                        <a href="{% url 'delete_room' room.id%}">
+                        <button class=" btn btn-danger ml-1 mb-2" id='del{{forloop.counter}}'  value="{{room.id}}" >delete</button></a>
+                    </td>
+                    
+                  </tr>
+                  {%endfor%}
+                  
+                 
+                </tbody>
+              </table>
+        </div>
+    </div>
+
+    {% for i in rooms%}
+    <div class="modal fade" id="edit_room{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Room</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                    <form action="{% url 'edit_room' i.id%}" class="form" method="POST">
+                        {% csrf_token %}
+                        <label for=""> Room Number</label>
+                        <input type="text" name="room" value="{{i.room_number}}" placeholder="Room Number" style="margin-top: 1%;" class="form-control" disabled><br>
+                        <label for="Category">  Category</label>
+                        <select name="category" id="" placeholder="category" class="form-control">
+                            <option value="{{i.category.id}}">{{i.category.name}}</option>
+                            {%for i in cat%}
+                            <option value="{{i.id}}">{{i.name}}</option>
+                            {%endfor%}
+                        </select> <br>
+                        <label for="">Status</label>
+                        <select name="status" id="" placeholder="status" class="form-control">
+                           
+                            {% if i.is_available == 0%}
+                            <option value=0 >Available</option>
+                            {%else%}
+                            <option value=1> Not Available</option>
+                            {%endif%}
+                           
+                        </select>
+    
+                        
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success" id="add-button" >Save changes</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+    {%endfor%}
+
+    <div class="modal fade" id="add_room" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Room</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                    <form action="{% url 'add_room'%}" class="form" method="POST">
+                        {% csrf_token %}
+                        
+                        <input type="text" name="room" placeholder="room_number" style="margin-top: 1%;" class="form-control" ><br>
+
+                        <select name="category" id="" placeholder="category" class="form-control">
+                            <option value="">Select Category</option>
+                            {%for i in cat%}
+                            <option value="{{i.id}}">{{i.name}}</option>
+                            {%endfor%}
+                        </select> <br>
+                        <select name="status" id="" placeholder="status" class="form-control">
+                            <option value="">Select Status</option>
+                            <option value=0 >Available</option>
+                            <option value=1> Not Available</option>
+                           
+                        </select>
+    
+                        
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success" id="add-button" >Save changes</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+  
+ 
+
+{% endblock %}
+

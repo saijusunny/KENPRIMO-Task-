@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8 col-md-8 col-sm-12" style="margin: 1% auto;">
+            <div style="text-align: right;" class="mb-3">
+                
+            </div>
+            <table class="table table-responsive-sm">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Room Number</th>
+                    <th scope="col">Customer Name</th>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">End Date</th>
+                    <th scope="col">Total Amount</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for ress in res%}
+                  <tr>
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td>{{ress.room}} </td>
+                    <td>{{ress.customer_name}} </td>
+                    <td>{{ress.start_date}} </td>
+                    <td>{{ress.end_date}} </td>
+                    <td>₹{{ress.total_price}} </td>
+
+                  </tr>
+                  {%endfor%}
+                  
+                 
+                </tbody>
+              </table>
+        </div>
+    </div>
+
+</div>
+
+  
+ 
+
+{% endblock %}
+
