@@ -36,6 +36,9 @@ urlpatterns = [
     path('get_room', views.get_room, name='get_room'),
     path('reservation_view', views.reservation_view, name='reservation_view'),
     path('room_reservation', views.room_reservation, name='room_reservation'),
+    path('get_room_fetch', views.get_room_fetch, name='get_room_fetch'),
+
+
     
     
 ]

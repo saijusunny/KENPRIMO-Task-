@@ -12,7 +12,7 @@ class Room(models.Model):
 
 class Reservation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    room =models.IntegerField(default=0)
+    room =models.CharField(max_length=255)
     start_date=models.DateField(null=True)
     end_date=models.DateField(null=True)
     customer_name = models.CharField(max_length=255)

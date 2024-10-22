@@ -94,7 +94,13 @@ def add_category(request):
         addcat=RoomCategory()
         addcat.name=request.POST.get('category_name')
         addcat.base_price=request.POST.get('category_price')
-        addcat.save()
+        if RoomCategory.objects.filter(name=addcat.name).exists():
+          
+            messages.info(request, 'Category Already Exists')
+            return redirect('home')
+        else:
+            
+            addcat.save()
 
     return redirect('view_category')
     
@@ -125,7 +131,12 @@ def add_room(request):
         addroom.room_number=request.POST.get('room')
         addroom.category=cat
         addroom.is_available=request.POST.get('status')
-        addroom.save()
+        if Room.objects.filter(room_number=addroom.room_number).exists():
+          
+            messages.info(request, 'Room Number Already Exists')
+            return redirect('home')
+        else:
+            addroom.save()
     return redirect('view_room')
 
 def view_room(request):
@@ -211,6 +222,22 @@ def get_room(request):
         'off_pr':offer.room_multiplier,
     }
     return JsonResponse(data)
+    
+def get_room_fetch(request):
+    key=request.GET.get('cat')
+    start=request.GET.get('start_date')
+    end=request.GET.get('end_date')
+    cats=RoomCategory.objects.get(id=key)
+    
+    
+    rooms=Room.objects.filter(category=cats, is_available=0)
+    rooms_data = [{'id': room.id, 'name': room.room_number} for room in rooms ]
+    data={
+        'status': 'success',
+        'rooms':rooms_data,
+       
+    }
+    return JsonResponse(data)
 
 def room_reservation(request):
     if request.method == "POST":
@@ -222,6 +249,11 @@ def room_reservation(request):
         res.customer_name = request.POST.get('customer_name') 
         res.total_price = request.POST.get('total_amout') 
         res.save()
+        num=request.POST.get('room')
+        print(num)
+        vals=Room.objects.get(room_number=num )
+        vals.is_available=1
+        vals.save()
         return redirect('reservation_view')
     return redirect('reservation_view')
 

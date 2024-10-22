@@ -159,9 +159,22 @@
             color: #414141;
         }
     </style>
+    <div class="row">
+        <div class="col-sm-12">
+          
+          {% for message in messages %}
+          <h5 style="text-align: center;">
+            <div class="alert alert-danger">
+              {{ message}}
+              </div>
+          </h5>
+          {%endfor%}
+        
+        </div>
+      </div>
     
     <div class="container">
-
+        
         <div class="card"style="margin-top: -4rem;" >
             <div class="face face1" >
                 <div class="content">
@@ -229,7 +242,6 @@
             </div>
         </div>
 
-
         <div class="card"style="margin-top: -4rem;" >
             <div class="face face1" >
                 <div class="content">
@@ -242,15 +254,17 @@
             <div class="face face2" >
                 <div class="content ">
                     
-                      
+                        <div><a href="{% url 'reservation_home'%}" class="" ><button type="button" class="btn btn-dark">Add Reservation</button></a> </div>
                        
-                        <a href="{% url 'reservation_home'%}" class=""><button type="button" class="btn btn-dark mt-2">View Special Rate</button></a>
+                        <a href="{% url 'reservation_view'%}" class=""><button type="button" class="btn btn-dark mt-2">View Reservation</button></a>
                       
     
                     </h3>
                 </div>
             </div>
         </div>
+
+        
 
 
     </div>
@@ -270,9 +284,9 @@
                     <form action="{% url 'add_category'%}" class="form" method="POST">
                         {% csrf_token %}
                         <label for=""> Category Name :</label>
-                        <input type="text" name="category_name" placeholder=" Category Name" style="margin-top: 1%;" class="form-control" ><br>
+                        <input type="text" name="category_name" placeholder=" Category Name" style="margin-top: 1%;" class="form-control"  required><br>
                         <label for=""> Price (₹) :</label>
-                        <input type="number" name="category_price" placeholder="Price" style="margin-top: 1%;" class="form-control" ><br>
+                        <input type="number" name="category_price" placeholder="Price" style="margin-top: 1%;" class="form-control"  required><br>
     
                         
                     
@@ -302,15 +316,15 @@
                     <form action="{% url 'add_room'%}" class="form" method="POST">
                         {% csrf_token %}
                         
-                        <input type="text" name="room" placeholder="Room Number" style="margin-top: 1%;" class="form-control" ><br>
+                        <input type="text" name="room" placeholder="Room Number" style="margin-top: 1%;" class="form-control"  required><br>
 
-                        <select name="category" id="" placeholder="category" class="form-control">
+                        <select name="category" id="" placeholder="category" class="form-control" required>
                             <option value="">Select Category</option>
                             {%for i in cat%}
                             <option value="{{i.id}}">{{i.name}}</option>
                             {%endfor%}
                         </select> <br>
-                        <select name="status" id="" placeholder="status" class="form-control">
+                        <select name="status" id="" placeholder="status" class="form-control" required>
                             <option value="">Select Status</option>
                             <option value=0 >Available</option>
                             <option value=1> Not Available</option>
@@ -346,18 +360,18 @@
                         
                         
 
-                        <select name="category" id="" placeholder="category" class="form-control">
+                        <select name="category" id="" placeholder="category" class="form-control" required>
                             <option value="">Select Category</option>
                             {%for i in cat%}
                             <option value="{{i.id}}">{{i.name}}</option>
                             {%endfor%}
                         </select> <br>
                         
-                        <input type="number" name="price" placeholder="Price(₹)" style="margin-top: 1%;" class="form-control" ><br>
+                        <input type="number" name="price" placeholder="Price(₹)" style="margin-top: 1%;" class="form-control" required ><br>
                         <label for="">Start Date:</label>
-                        <input type="date" name="st_dt" placeholder="" style="margin-top: 1%;" class="form-control" ><br>
+                        <input type="date" name="st_dt" placeholder="" style="margin-top: 1%;" class="form-control"  required><br>
                         <label for="">End Date</label>
-                        <input type="date" name="end_dt" placeholder="" style="margin-top: 1%;" class="form-control" ><br>
+                        <input type="date" name="end_dt" placeholder="" style="margin-top: 1%;" class="form-control"  required><br>
     
                         
                     
